@@ -1,10 +1,24 @@
-import { Component } from '@angular/core';
+import {Component, OnDestroy} from '@angular/core';
+import {DemoFassade} from "./store";
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
 })
-export class AppComponent {
-  title = 'tydux-demo-angular';
+export class AppComponent implements OnDestroy {
+
+  entries = this.demoFassade
+    .select(s => s.entries)
+    .unbounded();
+
+  constructor(private readonly demoFassade: DemoFassade) {
+  }
+
+  addEntry() {
+    this.demoFassade.addEntry(Date.now().toString());
+  }
+
+  ngOnDestroy() {
+  }
+
 }
